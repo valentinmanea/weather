@@ -1,21 +1,18 @@
 package com.weatherapp.WeatherApp.controllers;
 
 import java.security.Principal;
-import java.time.LocalDateTime;
-import java.util.Optional;
+
+import javax.annotation.PostConstruct;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.WebRequest;
 
@@ -56,6 +53,17 @@ public class AuthController {
 		logger.info("user logged "+principal);
 		
 		return principal;
+	}
+	
+	@PostConstruct()
+	public void init() {
+		UserDto user = new UserDto();
+		user.email = "nicolae_stefan@yahoo.com";
+		user.firtName = "Nicolae";
+		user.lastName = "Stefan";
+		user.username = "Stefan";
+		user.password = "password";
+		this.userService.save(user);
 	}
 
 }
