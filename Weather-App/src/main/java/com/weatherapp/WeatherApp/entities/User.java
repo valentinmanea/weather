@@ -1,8 +1,11 @@
 package com.weatherapp.WeatherApp.entities;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -10,6 +13,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -37,8 +41,36 @@ public class User  implements UserDetails{
     private boolean enabled;
 	
 	@ManyToOne(fetch = FetchType.EAGER)
-    private Role role;
+	@JsonIgnore
+	private Role role;
 	
+	@Column(name="country")
+	private String country;
+	
+	@OneToMany(cascade = CascadeType.ALL, mappedBy="user")
+	private List<Subscription> subscriptions; 
+	
+	public void addSubscription(Subscription subscription) {
+		if(subscriptions == null) {
+			subscriptions = Arrays.asList(subscription);
+		}else {
+			subscriptions.add(subscription);
+		}
+	}
+	
+	@JsonIgnore
+	public List<Subscription> getSubscriptions(){
+		return subscriptions;
+	}
+	
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
 	@Override
 	public boolean isEnabled() {
 		return enabled;
@@ -111,6 +143,14 @@ public class User  implements UserDetails{
 
 	public void setEnabled(boolean enabled) {
 		this.enabled = enabled;
+	}
+
+	public String getCountry() {
+		return country;
+	}
+
+	public void setCountry(String country) {
+		this.country = country;
 	}
 	
 }

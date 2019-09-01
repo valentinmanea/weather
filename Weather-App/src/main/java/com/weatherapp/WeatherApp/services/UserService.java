@@ -44,6 +44,7 @@ public class UserService{
 		user.setRole(role);
     	user.setPassword(passwordEncoder.encode(user.getPassword()));
     	user.setEnabled(true);
+    	user.setCountry(newUserDto.country);
 		return userRepo.save(user);
 	}
 

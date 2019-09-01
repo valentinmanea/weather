@@ -13,7 +13,7 @@ public class HeadlineDto {
 	public Date effectiveEpochDate;
 
 	@JsonProperty("Severity")
-	public int Sseverity;
+	public int severity;
 	
 	@JsonProperty("Text")
 	public String text;

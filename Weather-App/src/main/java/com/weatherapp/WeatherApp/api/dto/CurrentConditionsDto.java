@@ -25,4 +25,7 @@ public class CurrentConditionsDto {
 	
 	@JsonProperty("Temperature")
 	public TemperatureDto temperatureDto;
+	
+	@JsonProperty("TemperatureSummary")
+	public TemperatureSummaryDto summary;
 }

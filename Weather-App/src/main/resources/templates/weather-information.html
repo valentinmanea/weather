@@ -1,0 +1,24 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head></head>
+<body>
+<h1>Buna ziua <span th:text = "${username}"></span>, </h1>
+Informatiile meteorologice referitoarea la locatia: <b><span th:text = "${locationName}"></span> </b><br>
+La ora: <span th:text="${currentHour}"></span> <br>
+Temperatura: <span th:text="${currentTemperature}">°</span><br>
+Vreme: <span th:text="${currentWeather}">°</span><br>
+Posibilitate precipitatii: <span th:text="${precipitation}">°</span><br>
+<hr>
+In ultimele 6 ore temperatura maxima a fost de: <span th:text="${maximumTemperature}">°</span>, iar temperatura minima a fost de: <span th:text="${minimumTemperature}">°</span><br>
+<hr>
+Prognoza:<br>
+Data efectiva: <span th:text="${effectiveDate}"></span><br>
+Data incheiere: <span th:text="${endDate}"></span><br>
+Temperatura minima: <span th:text="${forecastTemperatureMinim}"></span><br>
+Temperatura maxima: <span th:text="${forecastTemperatureMaxim}"></span><br>
+Posibilitate precipitatii pe timp de noapte: <span th:text="${nightPrecipitation}"></span><br>
+Posibilitate precipitatii:  pe timp de zi: <span th:text="${dayPrecipitation}"></span><br>
+<hr>
+</body>
+</html>

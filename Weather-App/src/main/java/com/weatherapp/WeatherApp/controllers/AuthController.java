@@ -55,15 +55,4 @@ public class AuthController {
 		return principal;
 	}
 	
-	@PostConstruct()
-	public void init() {
-		UserDto user = new UserDto();
-		user.email = "nicolae_stefan@yahoo.com";
-		user.firtName = "Nicolae";
-		user.lastName = "Stefan";
-		user.username = "Stefan";
-		user.password = "password";
-		this.userService.save(user);
-	}
-
 }
