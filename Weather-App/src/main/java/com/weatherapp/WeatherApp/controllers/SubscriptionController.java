@@ -1,8 +1,12 @@
 package com.weatherapp.WeatherApp.controllers;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.weatherapp.WeatherApp.entities.Subscription;
 import com.weatherapp.WeatherApp.entities.User;
+import com.weatherapp.WeatherApp.errors.WeatherError;
 import com.weatherapp.WeatherApp.repo.SubscriptionRepo;
 import com.weatherapp.WeatherApp.repo.UserRepo;
 
@@ -27,16 +32,20 @@ public class SubscriptionController {
 	UserRepo userRepo;
 	
 	@PostMapping("/add")
-	public Subscription addSubscription(@RequestBody Subscription subscription) {
-		subscription.user = userRepo.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
-		subscription.isActive = true;
-		return subscriptionRepo.save(subscription);
+	public ResponseEntity<Subscription> addSubscription(@RequestBody Subscription subscription) {
+		subscription.setUser(userRepo.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName()));
+		subscription.setActive(true);
+		if(subscriptionRepo.findByLocationName(subscription.getLocationName()) != null) {
+			return new ResponseEntity(new WeatherError("Subscription with locationName " + subscription.getLocationName() + "already exists"), HttpStatus.CONFLICT);
+		}
+		return new ResponseEntity<Subscription>(subscriptionRepo.save(subscription), HttpStatus.CREATED);
 	}
 	
 	@GetMapping("/all")
 	public List<Subscription> getAllSubscriptions(){
 		return subscriptionRepo.findAll();
 	}
+	
 	
 	@DeleteMapping("/delete")
 	public void deleteSubscription(@PathVariable("id") Long id) {
@@ -46,9 +55,19 @@ public class SubscriptionController {
 	@GetMapping("/current-user/all")
 	public List<Subscription> getAllSubscriptionsForCurrentUser(){
 		User user = userRepo.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
-		List<Subscription> list = subscriptionRepo.findByUserId(user.getId());
-		list.stream().forEach(s->System.out.println(s.locationName));
-		return subscriptionRepo.findByUserId(user.getId());
+		List<Subscription> subscriptions = subscriptionRepo.findByUserId(user.getId());
+		return subscriptions; 
+	}
+	
+	@PostMapping("/current-user/status")
+	public boolean changeStatus(@RequestBody Subscription subscription){
+		System.out.println("Am salvat" + subscription);
+		Subscription subscriptionDB = subscriptionRepo.findByLocationName(subscription.getLocationName());
+		subscriptionDB.setActive(!subscriptionDB.isActive());
+		System.out.println("Am salvat" + subscriptionDB.isActive());
+		subscriptionRepo.save(subscriptionDB);
+		return subscriptionDB.isActive();
+	
 	}
 	
 }

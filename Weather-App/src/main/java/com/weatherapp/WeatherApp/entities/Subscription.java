@@ -21,30 +21,67 @@ public class Subscription {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	public Long id;
+	private Long id;
 
 	@Column(name= "location_name")
-	public String locationName;
-	
-	@Column(name= "duration")
-	public int duration;
+	private String locationName;
 	
 	@ManyToOne
 	@JoinColumn(name = "user_id")
 	@JsonIgnore
-	public User user;
+	private User user;
 	
 	@CreationTimestamp
-	public Date creationDate;
+	private Date creationDate;
 	
 	@Column(name="is_active")
-	public boolean isActive;
+	private boolean isActive;
 
 	@Override
 	public String toString() {
-		return "Subscription [id=" + id + ", locationName=" + locationName +", duration=" + duration
-				+ ", user=" + user + "]";
+		return "Subscription [id=" + id + ", locationName=" + locationName + ", user=" + user + "]";
 	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getLocationName() {
+		return locationName;
+	}
+
+	public void setLocationName(String locationName) {
+		this.locationName = locationName;
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+
+	public Date getCreationDate() {
+		return creationDate;
+	}
+
+	public void setCreationDate(Date creationDate) {
+		this.creationDate = creationDate;
+	}
+
+	public boolean isActive() {
+		return isActive;
+	}
+
+	public void setActive(boolean isActive) {
+		this.isActive = isActive;
+	}
+	
 	
 	
 }

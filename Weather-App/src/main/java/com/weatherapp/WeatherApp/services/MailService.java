@@ -39,7 +39,7 @@ public class MailService{
 	public MimeMessagePreparator prepareMail(Subscription subscription) {
 		 return mimeMessage -> {
 		        MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage);
-		        messageHelper.setTo(subscription.user.getEmail());
+		        messageHelper.setTo(subscription.getUser().getEmail());
 		        messageHelper.setSubject("Forecast subscription");
 		        String content = builder.createContentForWeatherMail(subscription);
 		        messageHelper.setText(content,true);

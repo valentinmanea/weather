@@ -50,6 +50,9 @@ public class User  implements UserDetails{
 	@OneToMany(cascade = CascadeType.ALL, mappedBy="user")
 	private List<Subscription> subscriptions; 
 	
+	@OneToMany(mappedBy="user")
+	private List<FavouriteCity> favouriteCities;
+	
 	public void addSubscription(Subscription subscription) {
 		if(subscriptions == null) {
 			subscriptions = Arrays.asList(subscription);
@@ -58,6 +61,13 @@ public class User  implements UserDetails{
 		}
 	}
 	
+	public void addFavouriteCity(FavouriteCity favouriteCity) {
+		if(favouriteCities == null) {
+			favouriteCities = Arrays.asList(favouriteCity);
+		}else {
+			favouriteCities.add(favouriteCity);
+		}
+	}
 	@JsonIgnore
 	public List<Subscription> getSubscriptions(){
 		return subscriptions;

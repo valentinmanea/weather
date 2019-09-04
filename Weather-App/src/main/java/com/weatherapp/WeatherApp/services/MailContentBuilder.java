@@ -41,13 +41,13 @@ public class MailContentBuilder {
     }
 
 	private void fillMailWithGeneralInformation(Subscription subscription, Context context) {
-		context.setVariable("username", subscription.user.getUsername());
-        context.setVariable("locationName", subscription.locationName);
+		context.setVariable("username", subscription.getUser().getUsername());
+        context.setVariable("locationName", subscription.getLocationName());
         context.setVariable("currentHour", LocalDate.now());
 	}
 
 	private void fillMailWithForecast(Subscription subscription, Context context) {
-		ForecastDto forecastForLocation = getForecastForLocation(subscription.locationName);
+		ForecastDto forecastForLocation = getForecastForLocation(subscription.getLocationName());
 		context.setVariable("maximumTemperature", forecastForLocation.dailyForecasts.get(0).temperature.maximum.value + forecastForLocation.dailyForecasts.get(0).temperature.maximum.unit);
         context.setVariable("minimumTemperature", forecastForLocation.dailyForecasts.get(0).temperature.minimum.value + forecastForLocation.dailyForecasts.get(0).temperature.minimum.unit);
         context.setVariable("effectiveDate", forecastForLocation.headline.effectiveDate);
@@ -59,7 +59,7 @@ public class MailContentBuilder {
 	}
 
 	private void fillMailWithCurrentConditions(Subscription subscription, Context context) {
-		CurrentConditionsDto currentConditionsForLocation = getCurrentConditionsForLocation(subscription.locationName);
+		CurrentConditionsDto currentConditionsForLocation = getCurrentConditionsForLocation(subscription.getLocationName());
 		context.setVariable("currentTemperature", currentConditionsForLocation.temperatureDto.metric.value + currentConditionsForLocation.temperatureDto.metric.unit);
         context.setVariable("currentWeather", currentConditionsForLocation.weatherText);
         context.setVariable("precipitation", currentConditionsForLocation.hasPrecipitation ? "Da" : "Nu");

@@ -9,7 +9,6 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import com.weatherapp.WeatherApp.services.MailService;
-import com.weatherapp.WeatherApp.services.SubscriptionService;
 
 @Component
 @EnableAsync
@@ -18,13 +17,11 @@ public class SendMailTask {
 	@Autowired
 	MailService mailService;
 	
-	@Autowired
-	SubscriptionService subscriptionService;
-	@Scheduled(cron="0 0/1 * * * *")
+//	@Scheduled(cron="0 0/1 * * * *") //la fiecare minut
+	@Scheduled(cron="0 0 8  * * *") // in fiecare zi la ora 8
 	@Async
 	public void sendMail() {
 		System.out.println("A fost ora" + LocalDate.now());
-		subscriptionService.checkSubscriptionActive();
 		mailService.sendMailsForAllSubscriptions();
 	}
 }

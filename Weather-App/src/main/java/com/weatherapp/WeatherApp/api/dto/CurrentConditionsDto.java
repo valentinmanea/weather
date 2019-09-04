@@ -18,7 +18,7 @@ public class CurrentConditionsDto {
 	public boolean hasPrecipitation;
 	
 	@JsonProperty("PrecipitationType")
-	public boolean precipitationType;
+	public String precipitationType;
 
 	@JsonProperty("IsDayTime")
 	public boolean isDayTime;
