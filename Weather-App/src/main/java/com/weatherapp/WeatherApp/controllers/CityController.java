@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -15,7 +17,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.weatherapp.WeatherApp.entities.FavouriteCity;
+import com.weatherapp.WeatherApp.entities.Subscription;
 import com.weatherapp.WeatherApp.entities.User;
+import com.weatherapp.WeatherApp.errors.WeatherError;
 import com.weatherapp.WeatherApp.repo.FavouriteCityRepo;
 import com.weatherapp.WeatherApp.repo.UserRepo;
 
@@ -31,15 +35,17 @@ public class CityController {
 	FavouriteCityRepo favouriteCityRepo;
 	
 	@PostMapping("/favourites/add")
-	public void addCityToFavorites(@RequestBody String name){
+	public ResponseEntity<FavouriteCity> addCityToFavorites(@RequestBody String name){
 		User user = userRepo.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
 		
 		FavouriteCity favouriteCity = new FavouriteCity(name);
 		favouriteCity.setUser(user);
 		user.addFavouriteCity(favouriteCity);
-		favouriteCityRepo.save(favouriteCity);
 		
-		// de adaugat validare 
+		if(favouriteCityRepo.findByCityName(name) != null) {
+		return new ResponseEntity(new WeatherError("City " + name + " already exists"), HttpStatus.CONFLICT);
+	}
+		return new ResponseEntity<FavouriteCity>(favouriteCityRepo.save(favouriteCity), HttpStatus.CREATED); 
 	}
 	
 	@DeleteMapping("/favourites/delete")

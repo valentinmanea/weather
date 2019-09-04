@@ -12,4 +12,7 @@ public class ForecastDetailsDto {
 	
     @JsonProperty("HasPrecipitation")
     public boolean hasPrecipitation;
+    
+    @JsonProperty("Wind")
+    public WindDto windDto;
 }

@@ -36,7 +36,7 @@ public class SubscriptionController {
 		subscription.setUser(userRepo.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName()));
 		subscription.setActive(true);
 		if(subscriptionRepo.findByLocationName(subscription.getLocationName()) != null) {
-			return new ResponseEntity(new WeatherError("Subscription with locationName " + subscription.getLocationName() + "already exists"), HttpStatus.CONFLICT);
+			return new ResponseEntity(new WeatherError("Subscription with locationName " + subscription.getLocationName() + " already exists"), HttpStatus.CONFLICT);
 		}
 		return new ResponseEntity<Subscription>(subscriptionRepo.save(subscription), HttpStatus.CREATED);
 	}

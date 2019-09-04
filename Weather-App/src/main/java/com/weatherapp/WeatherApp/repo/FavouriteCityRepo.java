@@ -22,4 +22,6 @@ public interface FavouriteCityRepo extends JpaRepository<FavouriteCity, Long>{
 	  @Modifying
 	@Query(value="DELETE FROM FavouriteCity f WHERE f.cityName=:cityName")
 	void deleteByCityName(String cityName);
+
+	FavouriteCity findByCityName(String name);
 }

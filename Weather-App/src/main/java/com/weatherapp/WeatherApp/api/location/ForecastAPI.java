@@ -28,9 +28,8 @@ public class ForecastAPI {
 		
 		@GetMapping("/forecast")
 		public ForecastDto getForecastByLocationKey(@RequestParam("locationKey") String locationKey){
-			System.out.println(endpoint + locationKey + "/?apikey=" + apiKey);
 			ResponseEntity<ForecastDto> response = restTemplate.exchange(
-				endpoint + locationKey + "?apikey=" + apiKey,
+				endpoint + locationKey + "?apikey=" + apiKey + "&details=true",
 				HttpMethod.GET,
 				null,
 				new ParameterizedTypeReference<ForecastDto>(){});
@@ -38,7 +37,7 @@ public class ForecastAPI {
 			if(forecast == null) {
 				throw new RuntimeException("No forecast for locationkey=" + locationKey );
 			}
-			return forecast;
+			return forecast; 
 		}
 		@GetMapping("/forecast-by-text")
 		public ForecastDto getForecastByText(@RequestParam("text") String text){
