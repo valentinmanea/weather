@@ -33,9 +33,10 @@ public class SubscriptionController {
 	
 	@PostMapping("/add")
 	public ResponseEntity<Subscription> addSubscription(@RequestBody Subscription subscription) {
-		subscription.setUser(userRepo.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName()));
+		User user = userRepo.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
+		subscription.setUser(user);
 		subscription.setActive(true);
-		if(subscriptionRepo.findByLocationName(subscription.getLocationName()) != null) {
+		if(subscriptionRepo.findByLocationNameForCurrentUser(subscription.getLocationName(), user.getId()) != null) {
 			return new ResponseEntity(new WeatherError("Subscription with locationName " + subscription.getLocationName() + " already exists"), HttpStatus.CONFLICT);
 		}
 		return new ResponseEntity<Subscription>(subscriptionRepo.save(subscription), HttpStatus.CREATED);

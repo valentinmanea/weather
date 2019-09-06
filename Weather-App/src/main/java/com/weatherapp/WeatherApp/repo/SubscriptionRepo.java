@@ -17,6 +17,8 @@ public interface SubscriptionRepo extends JpaRepository<Subscription, Long> {
 	List<Subscription> findActiveSubscription();
 
 	Subscription findByLocationName(String locationName);
+	@Query(value="SELECT s FROM Subscription s WHERE s.user.id=:id AND s.locationName=:locationName")
+	Object findByLocationNameForCurrentUser(String locationName, Long id);
 
 
 }

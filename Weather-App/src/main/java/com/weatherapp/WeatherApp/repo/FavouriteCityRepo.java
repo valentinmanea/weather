@@ -18,10 +18,15 @@ public interface FavouriteCityRepo extends JpaRepository<FavouriteCity, Long>{
 	
 	@Query(value="SELECT f FROM FavouriteCity f WHERE f.user.id=:id")
 	List<FavouriteCity> findByUserId(@Param("id") Long id);
+	
 	@Transactional
-	  @Modifying
+	@Modifying
 	@Query(value="DELETE FROM FavouriteCity f WHERE f.cityName=:cityName")
 	void deleteByCityName(String cityName);
 
 	FavouriteCity findByCityName(String name);
+	 
+	@Query(value="SELECT f FROM FavouriteCity f WHERE f.cityName=:cityName AND f.user.id=:id")
+	FavouriteCity findByCityNameForCurrentUser(@Param("cityName") String name, Long id);
+
 }

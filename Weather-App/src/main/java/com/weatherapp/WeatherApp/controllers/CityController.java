@@ -42,7 +42,7 @@ public class CityController {
 		favouriteCity.setUser(user);
 		user.addFavouriteCity(favouriteCity);
 		
-		if(favouriteCityRepo.findByCityName(name) != null) {
+		if(favouriteCityRepo.findByCityNameForCurrentUser(name, user.getId()) != null) {
 		return new ResponseEntity(new WeatherError("City " + name + " already exists"), HttpStatus.CONFLICT);
 	}
 		return new ResponseEntity<FavouriteCity>(favouriteCityRepo.save(favouriteCity), HttpStatus.CREATED); 
