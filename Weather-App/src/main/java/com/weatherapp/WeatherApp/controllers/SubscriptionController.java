@@ -29,14 +29,14 @@ public class SubscriptionController {
 	SubscriptionRepo subscriptionRepo;
 	
 	@Autowired
-	UserRepo userRepo;
+	UserRepo userRepo; 
 	
 	@PostMapping("/add")
 	public ResponseEntity<Subscription> addSubscription(@RequestBody Subscription subscription) {
 		User user = userRepo.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
 		subscription.setUser(user);
 		subscription.setActive(true);
-		if(subscriptionRepo.findByLocationNameForCurrentUser(subscription.getLocationName(), user.getId()) != null) {
+		if(subscriptionRepo.getSubscriptionForCurrentUser(subscription.getLocationName(), user.getId()) != null) {
 			return new ResponseEntity(new WeatherError("Subscription with locationName " + subscription.getLocationName() + " already exists"), HttpStatus.CONFLICT);
 		}
 		return new ResponseEntity<Subscription>(subscriptionRepo.save(subscription), HttpStatus.CREATED);
@@ -62,8 +62,9 @@ public class SubscriptionController {
 	
 	@PostMapping("/current-user/status")
 	public boolean changeStatus(@RequestBody Subscription subscription){
+		User user = userRepo.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
 		System.out.println("Am salvat" + subscription);
-		Subscription subscriptionDB = subscriptionRepo.findByLocationName(subscription.getLocationName());
+		Subscription subscriptionDB = subscriptionRepo.findByLocationNameForCurrentUser(subscription.getLocationName(), user.getId());
 		subscriptionDB.setActive(!subscriptionDB.isActive());
 		System.out.println("Am salvat" + subscriptionDB.isActive());
 		subscriptionRepo.save(subscriptionDB);
